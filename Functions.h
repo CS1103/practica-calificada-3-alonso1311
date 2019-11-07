@@ -32,8 +32,12 @@ void load_from(const string& nombreArchivo) {
     vector<string> names;
     vector<map<string, int>> propuestas;
     if(file.is_open()) {
+        string nombre_empresa;
         while(getline(file, fila)) {                
             if(fila == UPPER(fila)){
+                Producto p;
+                nombre_empresa = fila;
+                p.nombreProducto = nombre_empresa;
                 names.push_back(fila);
             }
 
@@ -87,32 +91,40 @@ double getProm(map<string, int> m) {
 
 using Comparator = function<bool(pair<string, int>, pair<string, int>)>;
 
-void Result() {
+void Result(int cantidad_empresas) {
     ofstream archivo("Respuesta.txt");
-    map<string, int> propuesta;
-    string name;
-    cin >> name;
-    cin.ignore();
-
-    for(int i = 0; i < 5; i++) {
-        string alias;
-        int pago;
-        cin >> alias >> pago;
+    for(;cantidad_empresas > 0; cantidad_empresas--) {
+        map<string, int> propuesta;
+        string name;
+        cout << "Ingrese empresa:\n";
+        cin >> name;
         cin.ignore();
-        propuesta[alias] = pago;    
-    }
-    auto compare = [](pair<string, int> p1, pair<string, int> p2) {
-        return p1.second > p2.second;
-    };
 
-    set<pair<string, int>, Comparator> set_product(propuesta.begin(), propuesta.end(), compare);
-    
-    archivo << name << ", " << getMax(propuesta) << ", " << getProm(propuesta) << ", " << getMin(propuesta) << endl;
+        int cantidad_alias;
+        cout << "Ingrese cantidad de propuestas: ";
+        cin >> cantidad_alias;
+        cin.ignore();
+        for(int i = 0; i < cantidad_alias; i++) {
+            string alias;
+            int pago;
+            cin >> alias >> pago;
+            cin.ignore();
+            propuesta[alias] = pago;    
+        }
+        auto compare = [](pair<string, int> p1, pair<string, int> p2) {
+            return p1.second > p2.second;
+        };
 
-    for(const auto &element : set_product) {
-        archivo << element.first << " " << element.second << endl;
-    }
+        set<pair<string, int>, Comparator> set_product(propuesta.begin(), propuesta.end(), compare);
     
+        archivo << name << ", " << getMax(propuesta) << ", " << getProm(propuesta) << ", " << getMin(propuesta) << endl;
+
+        for(const auto &element : set_product) {
+            archivo << element.first << " " << element.second << endl;
+        }
+        
+        archivo << endl;
+    }
 }
 
 
