@@ -10,6 +10,9 @@ int main() {
     cin >> number_bussiness;
     cin.ignore();
     Result(number_bussiness);
+    
+    
+    
 
     return 0;
 }

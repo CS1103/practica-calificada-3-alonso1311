@@ -29,6 +29,7 @@ void load_from(const string& nombreArchivo) {
     file.open(nombreArchivo, ios::in);
     string fila;
 
+    vector<Producto> products;
     vector<string> names;
     vector<map<string, int>> propuestas;
     if(file.is_open()) {
@@ -44,6 +45,7 @@ void load_from(const string& nombreArchivo) {
             else {
                 vector<string> lineas;
                 boost::split(lineas, fila, boost::is_any_of(" "));
+
             }
 
         }
@@ -117,7 +119,9 @@ void Result(int cantidad_empresas) {
 
         set<pair<string, int>, Comparator> set_product(propuesta.begin(), propuesta.end(), compare);
     
-        archivo << name << ", " << getMax(propuesta) << ", " << getProm(propuesta) << ", " << getMin(propuesta) << endl;
+        auto maxi = begin(set_product);
+        auto mini = next(maxi, set_product.size()-1);
+        archivo << name << ", " << maxi->second << ", " << getProm(propuesta) << ", " << mini->second << endl;
 
         for(const auto &element : set_product) {
             archivo << element.first << " " << element.second << endl;
