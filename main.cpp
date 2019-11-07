@@ -10,9 +10,8 @@ int main() {
     cin >> number_bussiness;
     cin.ignore();
     Result(number_bussiness);
-    
-    
-    
+   
+    //load_from("bid_example.txt");
 
     return 0;
 }
